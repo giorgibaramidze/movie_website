@@ -143,3 +143,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'baramidze72@gmail.com'
 EMAIL_HOST_PASSWORD = 'Mumia777'
 EMAIL_PORT = 587
+
+
+heroku config:set DISABLE_COLLECTSTATIC=1

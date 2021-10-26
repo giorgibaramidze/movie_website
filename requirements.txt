@@ -1,5 +1,4 @@
 
-distro-info===0.23ubuntu1
 Django==3.2.8
 django-cors-headers==3.10.0
 django-crispy-forms==1.6.0

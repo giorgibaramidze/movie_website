@@ -1,0 +1,154 @@
+.movies_list {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.movie-wrapper{
+  padding: 10px;
+  width: 25%;
+}
+.wrapper{
+
+  height: 290px;
+}
+.wrapper .movie-box{
+  height: 240px;
+  position: relative;
+  transition: z-index 5s;
+  background: black;
+}
+.wrapper:hover .movie-box img{
+  opacity: 0.5;
+}
+.wrapper:hover .movie-box .language-list{
+  z-index: 6;
+}
+.wrapper:hover .movie-box svg{
+  z-index: 6;
+}
+.wrapper:hover{
+  background-color: #242731;
+}
+.wrapper .movie-box .movie-details{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  padding: 16px;
+  font-weight: 700;
+}
+.wrapper .movie-box .movie-details .language-list{
+  color: white;
+  /*z-index: 8;*/
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+.wrapper .movie-box .movie-details .language-list span{
+  border:1px solid white;margin-left: 4px;
+  font-size: 12px;
+  padding: 3px;
+}
+.wrapper .movie-box .movie-details .imdb-year{
+  z-index: 80;
+  color: white;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.wrapper .movie-box .movie-details .imdb-year .imdb .imdb-logo{
+  border:1px solid white;
+}
+.wrapper .movie-box .movie-details .imdb-year .year{
+  border:1px solid white;
+
+}
+.wrapper .movie-box img{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 5;
+  transition: opacity 0.5s;
+}
+.wrapper .movie-box .linear-gradient{
+  width: 100%;
+  height: 100%;
+  z-index: 79;
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+}
+.wrapper .movie-box .linear-gradient-box{
+  background: linear-gradient(to bottom, rgb(195 47 47 / 0%) 0, #000 100%);
+  width: 100%;
+  height: 60px;
+}
+.wrapper .movie-box .play-icon{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+.wrapper .movie-box svg{
+  position: absolute;
+  /*z-index: 6;*/
+  width: 13%;
+  fill: white;
+  height: 100%;
+}
+.wrapper .movie-title{
+  height: 60px;
+  width: 100%;
+  color: white;
+  padding: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.wrapper .movie-title span{
+  font-size: 14px;
+  margin-top: 5px;
+  position: relative;
+  display: inline-block;
+}
+
+
+
+.search-filter form{
+  display: flex;
+}
+.click{
+  background-color: #f85f73;
+  cursor: pointer;
+}
+.click:hover{
+  background-color: #B71C1C;
+}
+.click, .links{
+  padding: 12px;
+  font-size: 1.2em;
+  outline: none;
+  color: #fff;
+  transition: 0.3;
+}
+.list{
+  position: absolute;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000000;
+  width: 200px;
+  background: white;
+}
+.newlist{
+  transform: scaleY(1);
+}
+.links{
+  background-color: #283c63;
+}

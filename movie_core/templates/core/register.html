@@ -1,0 +1,46 @@
+{% extends "core/base.html" %}
+{% block register %}
+<div class="authorization-content">
+  <div class="cover">
+    <div class="log-in-image"><img src="/images/images/2.svg"></div>
+  </div>
+  <div class="login-register">
+    <form class="" action="" method="POST">
+      {% csrf_token %}
+      <div class="row row-register">
+        <!-- <input type="text" name="" placeholder="სახელი">
+        <input type="email" name="" placeholder="ელფოსტა"> -->
+        {{form.username}}
+        {{form.email}}
+      </div>
+      <div class="row row-register">
+        <!-- <input type="password" name="" placeholder="პაროლი">
+        <input type="password" name="" placeholder="გაიმეროეთ პაროლი"> -->
+        {{form.password1}}
+        {{form.password2}}
+      </div>
+      <div class="row">
+        <a href="{% url 'login' %}" style="width:49%;">ავტორიზაცია</a>
+        <button type="submit" name="button" style="width:49%;">რეგისტრაცია</button>
+      </div>
+      <div class="row">
+        <div class="messages messages-width">
+          {% for message in messages %}
+            <p>{{message}}</p><br>
+          {% endfor %}
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+
+</div>
+<script>
+var form_fields = document.getElementsByTagName('input')
+form_fields[2].placeholder = 'სახელი';
+form_fields[3].placeholder = 'ელ.ფოსტა';
+form_fields[4].placeholder = 'პაროლი';
+form_fields[5].placeholder = 'გაიმეროეთ პაროლი';
+</script>
+{% endblock %}

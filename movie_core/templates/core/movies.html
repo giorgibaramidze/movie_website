@@ -1,0 +1,10 @@
+{% extends "core/base.html" %}
+{% block movies %}
+{% if movie_list %}
+{% include 'core/filters.html' %}
+{% endif %}
+<div class="movies_list">
+    <p class="ajaxLoader">Loading...</p>
+    {% include 'core/movies_list.html' %}
+</div>
+{% endblock %}

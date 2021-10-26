@@ -1,0 +1,141 @@
+.authorization-content{
+	display: flex;
+	flex-direction: column;
+}
+.authorization-content .cover{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 30px;
+	border-radius: 10px;
+	background-color: #242731;
+	width: 100%;
+}
+.authorization-content .cover .log-in-image{
+	width: 120px;
+	height: 120px;
+}
+.login-register{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin-top: 20px;
+}
+.login-register form{
+	display: flex;
+	flex-direction: column;
+}
+.login-register form .row{
+	margin-top: 25px;
+	display: flex;
+	justify-content: space-between;
+}
+.login-register form input{
+	background: #242731;
+	border:none;
+	border-radius: 5px;
+	height: 50px;
+	padding: 0 20px ;
+	color: white;
+}
+.login-register form a, .login-register form button{
+	width: 48%;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	background: #242731;
+	font-size: 14px;
+	border-radius: 6px;
+	border: none;
+}
+.login-register form button{
+	background: #ff4343;
+}
+.form-size{
+	width: 500px;
+}
+.row-register{width: 700px;}
+.row-register input{width: 49%;}
+.messages{
+	width: 500px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	color: red;
+	text-align: center;
+}
+.messages-width{
+	width: 100%;
+}
+
+
+
+
+
+
+.user-menu-list{
+	width: 200px;
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin-top: 255px;
+	z-index: 10000;
+	transform: scaleY(0);
+	transform-origin: top;
+	transition: 0.3s;
+	background: #242731;
+	padding: 16px;
+}
+.user-menu-list a{
+	color: #787d88;
+	width: 100%;
+	margin-top: 12px;
+}
+.user-menu-list a:hover{
+	color: #ff4343;
+}
+.new-list{
+	transform: scaleY(1);
+}
+.user-cover{
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	background: #242731;
+	color: white;
+}
+.user-nav-bar{
+	display: flex;
+	justify-content: center;
+	align-items:flex-end;
+}
+.user-nav-bar li{
+	padding: 20px;
+
+}
+.user-nav-bar li .active{
+	border-bottom: 4px solid #ff4343;
+}
+.user-nav-bar li a{
+	color: white;
+	padding-bottom: 15px;
+}
+.user-image-name{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 30px;
+}
+.user-image-name .log-in-image{
+	width: 110px;
+	height: 110px;
+}
+.user-image-name span{
+	margin-left: 15px;
+}

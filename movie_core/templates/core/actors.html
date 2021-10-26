@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+{% block actors %}
+<div class="actors-container infinite-container">
+  {% for actor in all_actors %}
+  <a href="{% url 'actors_movies' actor.id %}" class="actor-box infinite-item">
+    <img src="{{actor.actor_image.url}}" alt="">
+    <h4>{{actor.actor}}</h4>
+  </a>
+  {% endfor %}
+  {% if page_obj.has_next %}
+   <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
+  {% endif %}
+</div>
+{% endblock %}

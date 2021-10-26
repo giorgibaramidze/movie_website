@@ -1,0 +1,129 @@
+.movie{
+	width: 100%;
+	height: 820px;
+	background: blue;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	padding: 50px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	padding: 50px;
+}
+.movie .banner{
+	width: 400px;
+	height: 670px;
+	background: yellow;
+}
+.movie .banner img{
+	width: 100%;
+	height: 100%;
+}
+
+.movie .movie-video{
+	width: 1189px;
+	height: 670px;
+	position: relative;
+}
+.movie .movie-video > div{
+	width: 100%;
+	height: 100%;
+	background: black;
+}
+.about_movie{
+	padding: 0 30px 0 30px;
+	color: white;
+	background: #1f2128;
+}
+.about_movie .user_side ul{
+	display: flex;
+}
+.about_movie .user_side ul li{
+	margin-left: 20px;
+}
+.about_movie .title h3{
+	margin-top: 10px;
+}
+.about_movie .user_side svg{
+	fill: white;
+}
+.about_movie .row a{
+	color: yellow;
+	margin-left: 10px;
+}
+.about_movie .row{
+	font-size: 17px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 25px;
+}
+.about_movie .desctiption{
+	margin-top: 50px;
+}
+.about_movie .desctiption p{
+	margin-top: 20px;
+	font-size: 16px;
+	width: 50%;
+}
+
+
+
+
+
+
+
+.actors{
+	margin-top: 60px;
+}
+.actors .all-actors{
+	color: white;
+	font-weight: 900;
+	font-size: 22px;
+}
+.swc-2 {
+  width: 100%;
+  height: 175px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  overflow: hidden;
+  list-style: none;
+  padding: 0;
+  /* Fix of Webkit flickering */
+  z-index: 1;
+  margin-top: 25px;
+}
+.swc-2 .swiper-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  transition-property: transform;
+  box-sizing: content-box;
+}
+.swc-2 .swiper-slide{
+  height: 175px;
+  width: 100px;
+  position: relative;
+  transition: z-index 5s;
+}
+.swc-2 .swiper-slide img{
+	width: 100%;
+	height: 140px;
+	border-radius: 7px;
+}
+.swc-2 .swiper-slide .actor-name{
+	font-size: 12px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height:30px;
+	color: white;
+}
+.svg_fill{
+	fill:red;
+}

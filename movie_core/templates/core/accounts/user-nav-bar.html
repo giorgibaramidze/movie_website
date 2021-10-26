@@ -1,0 +1,14 @@
+<div class="user-cover">
+  <div class="user-image-name">
+    <div class="log-in-image"><img src="/images/images/2.svg"></div>
+    <div class="user-name">
+      <span> სახელი: {{request.user}}</span>
+    </div>
+  </div>
+  <ul class="user-nav-bar">
+    <li><a href="{% url 'watch_later' %}" class="{% if request.path == watch_later %} active {%endif%}">ვაპირებ ყურებას</a></li>
+    <li><a href="{% url 'favorites' %}" class="{% if request.path == favorites %} active {%endif%}">ფავორიტები</a></li>
+    <li><a href="{% url 'rated' %}" class="{% if request.path == rated %} active {%endif%}">შეფასებულები</a></li>
+    <li><a href="#">რედაქტირება</a></li>
+  </ul>
+</div>

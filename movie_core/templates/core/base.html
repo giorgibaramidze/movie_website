@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+	<link rel="stylesheet" href="{% static 'css/swiper/swiper-bundle.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/swiper/swiper-bundle.min.css' %}"/>
+	<script src="{% static 'javascript/swiper/swiper-bundle.js' %}"></script>
+	<script src="{% static 'javascript/swiper/swiper-bundle.min.js' %}"></script>
+	<title>ფილმები ქართულად, სერიალები ქართულად, filmebi qartulad - Kino.Ge</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/movies.css' %}">
+  <link rel="stylesheet" href="{% static 'css/actors.css' %}">
+	<link rel="stylesheet" href="{% static 'css/all_list.css' %}">
+	<link rel="stylesheet" href="{% static 'css/login-register.css' %}">
+</head>
+<body>
+	{% url 'home' as home %}
+	{% url 'actors' as actors %}
+	{% url 'movies' as movie_list %}
+	{% url 'favorites' as favorites %}
+	{% url 'watch_later' as watch_later %}
+	{% url 'rated' as rated %}
+	{% include 'core/nav-bar.html' %}
+	<div class="content">
+		<header>
+			<div class="logo"></div>
+			<form class="search-movie" id="search-form" action="{% url 'search' %}" method="get">
+				<!-- {% csrf_token %} -->
+				<input type="search" id="search-input" name="search" value="{{request.GET.search}}" placeholder="საძიებო სიტყვა..." autocomplete="off">
+				<button type="submit">ძებნა</button>
+				<div class="results-card not-visible" id="results-box"></div>
+			</form>
+			{% if user.is_authenticated %}
+			<div  class="log-in">
+				<div class="log-in-authorization">{{request.user}}</div>
+				<div class="log-in-image"><img src="/images/images/2.svg" class="menu-clicker">
+				</div>
+				<div class="user-menu-list">
+					<a href="{%url 'watch_later'%}">ვაპირებ ყურებას</a>
+					<a href="{% url 'favorites' %}">ფავორიტები</a>
+					<a href="{%url 'rated' %}">შეფასებულები</a>
+					<a href="#">რედაქტირება</a>
+					<a href="{%url 'logout'%}" style="color: #ff4343;">გასვლა</a>
+				</div>
+			</div>
+			<script type="text/javascript">
+				let click = document.querySelector('.menu-clicker');
+				let list = document.querySelector('.user-menu-list');
+				click.addEventListener('click', ()=>{
+					list.classList.toggle('new-list');
+				});
+			</script>
+			{% else %}
+			<a href="{%url 'login'%}" class="log-in">
+				<div class="log-in-authorization">ავტორიზაცია</div>
+				<div class="log-in-image"><img src="/images/images/2.svg"></div>
+			</a>
+			{% endif %}
+		</header>
+		<div class="movie-content">
+    {% block movie_details %}
+    {% endblock %}
+    {% block main%}
+    {% endblock %}
+    {% block actors %}
+    {% endblock %}
+		{% block movies %}
+		{% endblock %}
+		{% block actors_movies %}
+		{% endblock %}
+		{% block login %}
+		{% endblock %}
+		{% block register %}
+		{% endblock %}
+		{% block password_reset %}
+		{% endblock %}
+		{% block password_reset_sent %}
+		{% endblock %}
+		{% block password_reset_confirm %}
+		{% endblock %}
+		{% block password_reset_complete %}
+		{% endblock %}
+		{% block watch_later %}
+		{% endblock %}
+		{% block favorites %}
+		{% endblock %}
+		{% block rated %}
+		{% endblock %}
+		{% block search %}
+		{% endblock %}
+		</div>
+		<footer>
+			<ul>
+				<li><a href="">მთავარი</a></li>
+				<li><a href="">რეკლამა</a></li>
+				<li><a href="">კონტაქტი</a></li>
+			</ul>
+		</footer>
+	</div>
+<script>
+    var swiper = new Swiper('.swc-1', {
+      slidesPerView: 7,
+      centeredSlides: false,
+      spaceBetween: 17,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+      	320: {
+          slidesPerView: 1,
+          spaceBetween: 10,
+        },
+      	375: {
+          slidesPerView: 1,
+          spaceBetween: 10,
+        },
+      	425: {
+          slidesPerView: 2,
+          spaceBetween: 10,
+        },
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 3,
+          spaceBetween: 17,
+        },
+        1024: {
+          slidesPerView: 7,
+          spaceBetween: 17,
+        },
+      },
+    });
+</script>
+
+
+<script>
+    var swiper = new Swiper('.swc-2', {
+      slidesPerView: 15,
+      centeredSlides: false,
+      spaceBetween: 12,
+      // breakpoints: {
+      // 	320: {
+      //     slidesPerView: 1,
+      //     spaceBetween: 10,
+      //   },
+      // 	375: {
+      //     slidesPerView: 1,
+      //     spaceBetween: 10,
+      //   },
+      // 	425: {
+      //     slidesPerView: 2,
+      //     spaceBetween: 10,
+      //   },
+      //   640: {
+      //     slidesPerView: 2,
+      //     spaceBetween: 10,
+      //   },
+      //   768: {
+      //     slidesPerView: 3,
+      //     spaceBetween: 17,
+      //   },
+      //   1024: {
+      //     slidesPerView: 7,
+      //     spaceBetween: 17,
+      //   },
+      // },
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="{% static 'javascript/jquery/jquery.waypoints.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'javascript/jquery/infinite.min.js' %}"></script>
+<script>
+  var infinite = new Waypoint.Infinite({
+    element: $('.infinite-container')[0],
+
+    offset: 'bottom-in-view',
+
+    onBeforePageLoad: function (){
+
+    },
+    onAfterPageLoad: function (){
+
+    },
+  });
+</script>
+
+<script>
+$(document).ready(function(){
+	$(".ajaxLoader").hide();
+	$(".filter-checkbox").on('click', function(){
+			var filterObj={};
+			$(".filter-checkbox").each(function(index,ele){
+				var filterVal=$(this).val();
+				var filterKey=$(this).data('filter');
+				filterObj[filterKey]=Array.from(document.querySelectorAll('input[data-filter='+filterKey+']:checked')).map(function(el){
+					return el.value;
+				});
+			});
+			$.ajax({
+				url:'{% url "filter_data" %}',
+				type: 'GET',
+				data:filterObj,
+				dataType:'json',
+				beforeSend:function(){
+					$('.ajaxLoader').show();
+				},
+				success:function(res){
+					$('.movies_list').html(res.data);
+					$('.ajaxLoader').hide();
+					console.log(res);
+				}
+			});
+	});
+});
+</script>
+<script>
+  $(document).ready(function(event){
+	   $(document).on('click', '#favourite', function(event){
+		     event.preventDefault();
+		     var pk = $(this).attr('value');
+    		 $.ajax({
+    				type: 'POST',
+    				url: '{% url "favourite_movie" %}',
+    				data: {'id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+    				dataType: 'json',
+    				success: function(response){
+    				      $('#user_side1').html(response['form'])
+    				          console.log($('#user_side1').html(response['form']));
+    				},
+    				error: function(rs, e){
+    				      console.log(rs.responseText);
+    				},
+			});
+		});
+	});
+</script>
+<script>
+  $(document).ready(function(event){
+	   $(document).on('click', '#watch_later', function(event){
+		     event.preventDefault();
+		     var pk = $(this).attr('value');
+    		 $.ajax({
+    				type: 'POST',
+    				url: '{% url "watch_later_movie" %}',
+    				data: {'id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+    				dataType: 'json',
+    				success: function(response){
+    				      $('#user_side2').html(response['watch_later'])
+    				          console.log($('#user_side2').html(response['watch_later']));
+    				},
+    				error: function(rs, e){
+    				      console.log(rs.responseText);
+    				},
+			});
+		});
+	});
+</script>
+</body>
+</html>

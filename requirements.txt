@@ -26,3 +26,4 @@ SQLAlchemy==1.4.23
 sqlparse==0.4.1
 
 virtualenv==20.0.17
+whitenoise==5.2.0

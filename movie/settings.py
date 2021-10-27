@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '+6j*v*w-(lwvb$&z-yx2=^)%6zo9dx&@g2!*#^zumtw^3ri41t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'filmebiqartulad.herokuapp.com']
+ALLOWED_HOSTS = ['']
 
 
 # Application definition
@@ -45,7 +45,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -143,5 +142,3 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'baramidze72@gmail.com'
 EMAIL_HOST_PASSWORD = 'Mumia777'
 EMAIL_PORT = 587
-
-

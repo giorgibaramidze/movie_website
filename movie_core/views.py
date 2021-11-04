@@ -15,6 +15,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
 from .token_generator import account_activation_token
+from django.contrib.auth.decorators import login_required
 
 
 def registerPage(request):
@@ -70,7 +71,7 @@ def activate_account(request, uidb64, token):
         messages.success(request, 'თქვენ წარმათებით გაიარეთ რეგისტრაცია')
         return HttpResponse('აქტივაციისთვის '  + '<a href="/login">დააჭირე აქ</a>')
     else:
-        return HttpResponse('Activation link is invalid!')
+        return HttpResponse('აქტივაციის ლინკი არასწორია!')
 
 def loginPage(request):
     if request.user.is_authenticated:
@@ -120,16 +121,32 @@ def MovieDetailView(request, id):
     movies.save()
     is_favourite = False
     is_watch_later = False
+    is_like = False
     if movies.favourite.filter(id=request.user.id).exists():
         is_favourite = True
+    if movies.likes.filter(id=request.user.id).exists():
+        is_like = True
     if movies.watch_later.filter(id=request.user.id).exists():
         is_watch_later = True
+    comments = Comment.objects.filter(movie=movies).order_by('-id')
     similar_movies = movies.tag.similar_objects()[:5]
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST or None)
+        if comment_form.is_valid():
+            content = request.POST.get('content')
+            comment = Comment.objects.create(movie=movies, user=request.user.profile, content=content)
+            comment.save()
+            return HttpResponseRedirect(movies.get_absolute_url())
+    else:
+        comment_form = CommentForm()
     context = {
         'movie_details':movies,
+        'comments': comments,
+        'comment_form': comment_form,
         'similar_movies':similar_movies,
         'is_favourite': is_favourite,
         'is_watch_later':is_watch_later,
+        'is_like':is_like,
     }
     return render(request, 'core/movie_details.html', context)
 
@@ -170,6 +187,25 @@ def watch_later_movie(request):
         return JsonResponse({'watch_later': html})
     # return HttpResponseRedirect(movie.get_absolute_url())
 
+def like_movie(request):
+    movie = get_object_or_404(Movie, id=request.POST.get('id'))
+    is_like = False
+    if movie.likes.filter(id=request.user.id).exists():
+        movie.likes.remove(request.user)
+        is_like = False
+    else:
+        movie.likes.add(request.user)
+        is_like = True
+    context = {
+        'is_like':is_like,
+        'movie_details':movie,
+        'total_likes': movie.total_likes(),
+    }
+    if request.is_ajax():
+        html = render_to_string('core/accounts/like.html', context, request=request)
+        return JsonResponse({'like': html})
+    # return HttpResponseRedirect(movie.get_absolute_url())
+
 class ActorsListView(ListView):
     template_name = 'core/actors.html'
     model = Actor
@@ -195,6 +231,23 @@ def MovieListView(request):
     country = Countrie.objects.all().order_by('country')
     director = Director.objects.all().order_by('director')
     actor = Actor.objects.all().order_by('actor')
+    genre_query = request.GET.get('genre')
+    country_query = request.GET.get('country')
+    actor_query = request.GET.get('actor')
+    voice_query = request.GET.get('voice')
+    director_query = request.GET.get('director')
+
+    if is_valid_queryparam(genre_query):
+        movie = movie.filter(genries__genre=genre_query)
+    if is_valid_queryparam(voice_query):
+        movie = movie.filter(voices__voice=voice_query)
+
+    if is_valid_queryparam(country_query):
+        movie = movie.filter(countries__country=country_query)
+    if is_valid_queryparam(director_query):
+        movie = movie.filter(directors__director=director_query)
+    if is_valid_queryparam(actor_query):
+        movie = movie.filter(actors__actor=actor_query)
     context={
         'movies': movie,
         'genre':genre,
@@ -257,24 +310,64 @@ def search(request):
 
 
 
-def filter_data(request):
+def filter_data_movie(request):
     genries = request.GET.getlist('genre[]')
     voices = request.GET.getlist('voice[]')
     countries = request.GET.getlist('country[]')
     directors = request.GET.getlist('director[]')
     actors = request.GET.getlist('actor[]')
-    movies = Movie.objects.filter(type='ფილმი').order_by('-id').distinct()
+    movies = Movie.objects.filter(type='ფილმი').order_by('-id')
     if len(genries)>0:
-        movies = movies.filter(genries__genre__in=genries).distinct()
+        movies = movies.filter(genries__genre__in=genries)
     elif len(voices)>0:
-        movies = movies.filter(voices__voice__in=voices).distinct()
+        movies = movies.filter(voices__voice__in=voices)
     elif len(countries)>0:
-        movies = movies.filter(countries__country__in=countries).distinct()
+        movies = movies.filter(countries__country__in=countries)
     elif len(directors)>0:
-        movies = movies.filter(directors__director__in=directors).distinct()
+        movies = movies.filter(directors__director__in=directors)
     elif len(actors)>0:
-        movies = movies.filter(actors__actor__in=actors).distinct()
+        movies = movies.filter(actors__actor__in=actors)
     data=render_to_string('core/movies_list.html', {'movies':movies})
+    return JsonResponse({'data':data})
+
+def filter_data_trailer(request):
+    genries = request.GET.getlist('genre[]')
+    voices = request.GET.getlist('voice[]')
+    countries = request.GET.getlist('country[]')
+    directors = request.GET.getlist('director[]')
+    actors = request.GET.getlist('actor[]')
+    movies = Movie.objects.filter(type='თრეილერი').order_by('-id')
+    if len(genries)>0:
+        movies = movies.filter(genries__genre__in=genries)
+    elif len(voices)>0:
+        movies = movies.filter(voices__voice__in=voices)
+    elif len(countries)>0:
+        movies = movies.filter(countries__country__in=countries)
+    elif len(directors)>0:
+        movies = movies.filter(directors__director__in=directors)
+    elif len(actors)>0:
+        movies = movies.filter(actors__actor__in=actors)
+    data=render_to_string('core/trailers_list.html', {'movies':movies})
+    return JsonResponse({'data':data})
+
+def filter_data_serial(request):
+    genries = request.GET.getlist('genre[]')
+    voices = request.GET.getlist('voice[]')
+    countries = request.GET.getlist('country[]')
+    directors = request.GET.getlist('director[]')
+    actors = request.GET.getlist('actor[]')
+    movies = Movie.objects.filter(type='სერიალი').order_by('-id')
+    if len(genries)>0:
+        movies = movies.filter(genries__genre__in=genries)
+    elif len(voices)>0:
+        movies = movies.filter(voices__voice__in=voices)
+    elif len(countries)>0:
+        movies = movies.filter(countries__country__in=countries)
+    elif len(directors)>0:
+        movies = movies.filter(directors__director__in=directors)
+    elif len(actors)>0:
+        movies = movies.filter(actors__actor__in=actors)
+    data=render_to_string('core/serials_list.html', {'movies':movies})
     return JsonResponse({'data':data})
 
 def watch_later(request):
@@ -294,4 +387,143 @@ def favorites(request):
     return render(request, 'core/accounts/favorites.html', context)
 
 def rated(request):
-    return render(request, 'core/accounts/rated.html')
+    user = request.user
+    like_movie = user.likes.all().order_by('-id')
+    context = {
+        'like_movie': like_movie,
+    }
+    return render(request, 'core/accounts/rated.html',context)
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'თქვენი ანგარიში განახლდა')
+            return redirect('edit_profile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'u_form':u_form,
+        'p_form':p_form
+    }
+    return render(request, 'core/accounts/edit_profile.html', context)
+
+def serials(request):
+    serials = Movie.objects.filter(type='სერიალი').order_by('-id')
+    genre = Genrie.objects.all().order_by('genre')
+    voice = Voice.objects.all().order_by('voice')
+    country = Countrie.objects.all().order_by('country')
+    director = Director.objects.all().order_by('director')
+    actor = Actor.objects.all().order_by('actor')
+    genre_query = request.GET.get('genre')
+    country_query = request.GET.get('country')
+    actor_query = request.GET.get('actor')
+    voice_query = request.GET.get('voice')
+    director_query = request.GET.get('director')
+
+    if is_valid_queryparam(genre_query):
+        serials = serials.filter(genries__genre=genre_query)
+    if is_valid_queryparam(voice_query):
+        serials = serials.filter(voices__voice=voice_query)
+
+    if is_valid_queryparam(country_query):
+        serials = serials.filter(countries__country=country_query)
+    if is_valid_queryparam(director_query):
+        serials = serials.filter(directors__director=director_query)
+    if is_valid_queryparam(actor_query):
+        serials = serials.filter(actors__actor=actor_query)
+    context={
+        'movies': serials,
+        'genre':genre,
+        'country':country,
+        'actor': actor,
+        'director':director,
+        'voice': voice,
+        }
+    return render(request, 'core/serials.html', context)
+
+def trailers(request):
+    trailers = Movie.objects.filter(type='თრეილერი').order_by('-id')
+    genre = Genrie.objects.all().order_by('genre')
+    voice = Voice.objects.all().order_by('voice')
+    country = Countrie.objects.all().order_by('country')
+    director = Director.objects.all().order_by('director')
+    actor = Actor.objects.all().order_by('actor')
+    genre_query = request.GET.get('genre')
+    country_query = request.GET.get('country')
+    actor_query = request.GET.get('actor')
+    voice_query = request.GET.get('voice')
+    director_query = request.GET.get('director')
+
+    if is_valid_queryparam(genre_query):
+        trailers = trailers.filter(genries__genre=genre_query)
+    if is_valid_queryparam(voice_query):
+        trailers = trailers.filter(voices__voice=voice_query)
+
+    if is_valid_queryparam(country_query):
+        trailers = trailers.filter(countries__country=country_query)
+    if is_valid_queryparam(director_query):
+        trailers = trailers.filter(directors__director=director_query)
+    if is_valid_queryparam(actor_query):
+        trailers = trailers.filter(actors__actor=actor_query)
+    context={
+        'movies': trailers,
+        'genre':genre,
+        'country':country,
+        'actor': actor,
+        'director':director,
+        'voice': voice,
+        }
+    return render(request, 'core/trailers.html', context)
+
+def TrailerDetailView(request, id):
+    movies = get_object_or_404(Movie, id=id)
+    movies.views += 1
+    movies.save()
+    is_favourite = False
+    is_watch_later = False
+    is_like = False
+    if movies.favourite.filter(id=request.user.id).exists():
+        is_favourite = True
+    if movies.likes.filter(id=request.user.id).exists():
+        is_like = True
+    if movies.watch_later.filter(id=request.user.id).exists():
+        is_watch_later = True
+    similar_movies = movies.tag.similar_objects()[:5]
+    context = {
+        'movie_details':movies,
+        'similar_movies':similar_movies,
+        'is_favourite': is_favourite,
+        'is_watch_later':is_watch_later,
+        'is_like':is_like,
+    }
+    return render(request, 'core/trailer_details.html', context)
+
+def SerialDetailView(request, id):
+    movies = get_object_or_404(Movie, id=id)
+    movies.views += 1
+    movies.save()
+    is_favourite = False
+    is_watch_later = False
+    is_like = False
+    if movies.favourite.filter(id=request.user.id).exists():
+        is_favourite = True
+    if movies.likes.filter(id=request.user.id).exists():
+        is_like = True
+    if movies.watch_later.filter(id=request.user.id).exists():
+        is_watch_later = True
+    similar_movies = movies.tag.similar_objects()[:5]
+    context = {
+        'movie_details':movies,
+        'similar_movies':similar_movies,
+        'is_favourite': is_favourite,
+        'is_watch_later':is_watch_later,
+        'is_like':is_like,
+    }
+    return render(request, 'core/serial_details.html', context)

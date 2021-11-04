@@ -8,14 +8,14 @@
     <form class="" action="" method="POST">
       {% csrf_token %}
       <div class="row row-register">
-        <!-- <input type="text" name="" placeholder="სახელი">
-        <input type="email" name="" placeholder="ელფოსტა"> -->
+        {{form.first_name}}
+        {{form.last_name}}
+      </div>
+      <div class="row row-register">
         {{form.username}}
         {{form.email}}
       </div>
       <div class="row row-register">
-        <!-- <input type="password" name="" placeholder="პაროლი">
-        <input type="password" name="" placeholder="გაიმეროეთ პაროლი"> -->
         {{form.password1}}
         {{form.password2}}
       </div>
@@ -39,8 +39,10 @@
 <script>
 var form_fields = document.getElementsByTagName('input')
 form_fields[2].placeholder = 'სახელი';
-form_fields[3].placeholder = 'ელ.ფოსტა';
-form_fields[4].placeholder = 'პაროლი';
-form_fields[5].placeholder = 'გაიმეროეთ პაროლი';
+form_fields[3].placeholder = 'გვარი';
+form_fields[4].placeholder = 'მომხმარებლის სახელი';
+form_fields[5].placeholder = 'ელ.ფოსტა';
+form_fields[6].placeholder = 'პაროლი';
+form_fields[7].placeholder = 'გაიმეროეთ პაროლი';
 </script>
 {% endblock %}

@@ -1,14 +1,16 @@
 <div class="user-cover">
   <div class="user-image-name">
-    <div class="log-in-image"><img src="/images/images/2.svg"></div>
+    <div class="log-in-image"><img src="{{request.user.profile.image.url}}" style="width:100%; height:100%;"></div>
     <div class="user-name">
-      <span> სახელი: {{request.user}}</span>
+      <span>{{user.first_name}} {{user.last_name}}</span><br><br>
+      <span>ელ.ფოსტა :{{user.email}}</span>
+
     </div>
   </div>
   <ul class="user-nav-bar">
     <li><a href="{% url 'watch_later' %}" class="{% if request.path == watch_later %} active {%endif%}">ვაპირებ ყურებას</a></li>
     <li><a href="{% url 'favorites' %}" class="{% if request.path == favorites %} active {%endif%}">ფავორიტები</a></li>
     <li><a href="{% url 'rated' %}" class="{% if request.path == rated %} active {%endif%}">შეფასებულები</a></li>
-    <li><a href="#">რედაქტირება</a></li>
+    <li><a href="{% url 'edit_profile' %}" class="{% if request.path == edit_profile %} active {%endif%}">რედაქტირება</a></li>
   </ul>
 </div>

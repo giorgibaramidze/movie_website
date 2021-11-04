@@ -1,5 +1,5 @@
 <div class="search-filter">
-  <form class="" action="{% url 'search' %}" method="GET">
+  <form class="" action="{% url 'filter_data_movie' %}" method="GET">
 
     <div class="filter-form">
         <div class="multiselect">
@@ -12,7 +12,7 @@
           <div id="checkboxes">
             <label>
               {% for i in genre %}
-              <input type="checkbox" class="filter-checkbox" data-filter='genre' name="genre" value="{{i}}">{{i}}</label>
+              <input type="checkbox" class="filter-checkbox-movie" data-filter='genre' name="genre" value="{{i}}">{{i}}</label>
             <label>
               {% endfor %}
           </div>
@@ -29,7 +29,7 @@
           <div id="checkboxes1">
             <label>
               {% for i in country %}
-              <input type="checkbox" class="filter-checkbox" data-filter='country' name="country" value="{{i}}">{{i}}</label>
+              <input type="checkbox" class="filter-checkbox-movie" data-filter='country' name="country" value="{{i}}">{{i}}</label>
               {% endfor %}
           </div>
         </div>
@@ -45,7 +45,7 @@
           <div id="checkboxes2">
             <label>
               {% for i in actor %}
-              <input type="checkbox" class="filter-checkbox" name="actor" data-filter='actor' value="{{i}}">{{i}}</label>
+              <input type="checkbox" class="filter-checkbox-movie" name="actor" data-filter='actor' value="{{i}}">{{i}}</label>
               {% endfor %}
           </div>
         </div>
@@ -61,7 +61,7 @@
           <div id="checkboxes3">
             <label>
               {% for i in director %}
-              <input type="checkbox" class="filter-checkbox" name="director" data-filter='director' value="{{i}}">{{i}}</label>
+              <input type="checkbox" class="filter-checkbox-movie" name="director" data-filter='director' value="{{i}}">{{i}}</label>
               {% endfor %}
           </div>
         </div>
@@ -77,7 +77,7 @@
           <div id="checkboxes4">
             <label>
               {% for i in voice %}
-              <input type="checkbox" class="filter-checkbox" name="voice" data-filter='voice' value="{{i}}">{{i}}</label>
+              <input type="checkbox" class="filter-checkbox-movie" name="voice" data-filter='voice' value="{{i}}">{{i}}</label>
               {% endfor %}
           </div>
         </div>

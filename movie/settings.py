@@ -139,6 +139,6 @@ JAZZMIN_SETTINGS = {
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'baramidze72@gmail.com'
-EMAIL_HOST_PASSWORD = 'Mumia777'
+EMAIL_HOST_USER = 'geomovies00@gmail.com'
+EMAIL_HOST_PASSWORD = 'moviesmovies'
 EMAIL_PORT = 587

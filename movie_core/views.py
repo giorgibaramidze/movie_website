@@ -128,15 +128,19 @@ def MovieDetailView(request, id):
         is_like = True
     if movies.watch_later.filter(id=request.user.id).exists():
         is_watch_later = True
-    comments = Comment.objects.filter(movie=movies).order_by('-id')
+    comments = Comment.objects.filter(movie=movies, reply=None).order_by('-id')
     similar_movies = movies.tag.similar_objects()[:5]
     if request.method == 'POST':
         comment_form = CommentForm(request.POST or None)
         if comment_form.is_valid():
             content = request.POST.get('content')
-            comment = Comment.objects.create(movie=movies, user=request.user.profile, content=content)
+            reply_id = request.POST.get('comment_id')
+            comment_qs = None
+            if reply_id:
+                comment_qs = Comment.objects.get(id=reply_id)
+            comment = Comment.objects.create(movie=movies, user=request.user.profile, content=content, reply=comment_qs)
             comment.save()
-            return HttpResponseRedirect(movies.get_absolute_url())
+            # return HttpResponseRedirect(movies.get_absolute_url())
     else:
         comment_form = CommentForm()
     context = {
@@ -148,6 +152,9 @@ def MovieDetailView(request, id):
         'is_watch_later':is_watch_later,
         'is_like':is_like,
     }
+    if request.is_ajax():
+        html = render_to_string('core/accounts/comments.html', context, request=request)
+        return JsonResponse({'form': html})
     return render(request, 'core/movie_details.html', context)
 
 

@@ -248,6 +248,7 @@ $(document).ready(function(){
 					console.log(res);
 				}
 			});
+
 	});
 	$(".filter-checkbox-serial").on('click', function(){
 			var filterObjSerial={};
@@ -360,6 +361,51 @@ $(document).ready(function(){
     				error: function(rs, e){
     				      console.log(rs.responseText);
     				},
+			});
+		});
+		$('.reply-button').click(function(){
+				$(this).parent().parent().parent().parent().next('.reply-text').fadeToggle();
+		});
+		$(document).on('submit', '.comment-form', function(event){
+			event.preventDefault();
+			console.log($(this).serialize());
+			$.ajax({
+				type: 'POST',
+				url: $(this).attr('action'),
+				data: $(this).serialize(),
+				dataType: 'json',
+				success: function(response){
+					$('.main-comment-section').html(response['form']);
+					$('textarea').val('');
+					$('.reply-button').click(function(){
+						$(this).parent().parent().parent().parent().next('.reply-text').fadeToggle();
+						$('textarea').val('');
+					});
+				},
+				error: function(rs, e){
+					console.log(rs.responseText);
+				},
+			});
+		});
+		$(document).on('submit', '.reply-form', function(event){
+			event.preventDefault();
+			console.log($(this).serialize());
+			$.ajax({
+				type: 'POST',
+				url: $(this).attr('action'),
+				data: $(this).serialize(),
+				dataType: 'json',
+				success: function(response){
+					$('.main-comment-section').html(response['form']);
+					$('textarea').val('');
+					$('.reply-button').click(function(){
+						$(this).parent().parent().parent().parent().next('.reply-text').fadeToggle();
+						$('textarea').val('');
+					});
+				},
+				error: function(rs, e){
+					console.log(rs.responseText);
+				},
 			});
 		});
 	});

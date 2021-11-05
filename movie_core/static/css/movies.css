@@ -127,3 +127,111 @@
 .svg_fill{
 	fill:red;
 }
+
+.main-comment-section{
+	display: flex;
+	flex-direction: column;
+	width: 40%;
+	color: white;
+}
+.comment-title{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.comment-title h5{
+	color: #adadad;
+	padding: 10px;
+	background: #242731;
+}
+.comment-text{
+	width: 100%;
+	height: 150px;
+	background: #242731;
+	margin-top: 20px;
+	padding: 12px;
+}
+.comment-text textarea{
+	height: 70px;
+	background: #1f2128;
+	outline: none;
+	border: none;
+	width: 86%;
+	color: #adadad;
+	resize: none;
+	padding: 10px;
+}
+.comment-text .text-area{
+	display: flex;
+	justify-content: space-between;
+}
+.comment-text .button-section{
+	display: flex;
+	height: 100%;
+	width: 100%;
+	justify-content: flex-end;
+}
+.comment-text .button-section input[type=submit]{
+	padding: 10px;
+	background:#1f2128;
+	color: white;
+	border: none;
+	margin-top: 20px;
+}
+.comment-text .button-section input[type=submit]:hover{
+	color:#ff4343;
+	transition: 0.3s;
+}
+
+.comments-setcion{
+	display: flex;
+	width: 100%;
+	margin-top: 20px;
+}
+.comment-author-text{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 5px;
+}
+.comment-author-text .time-button{
+	display: flex;
+	justify-content: space-between;
+}
+.time-button .user-time{
+	display: flex;
+	flex-direction: column;
+}
+.time-button .user-time h6{
+	margin-top: 4px;
+	color:#adadad;
+}
+
+.comment-author-text .text{
+	background: #242731;
+	width: 100%;
+	padding: 11px;
+	color: #adadad;
+}
+.reply-text{
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	flex-direction: column;
+}
+.reply{
+	width: 89%;
+}
+.reply-button{
+	background: #ff4343;
+	padding: 5px;
+	border: none;
+	color: white;
+	border-radius: 3px;
+
+}
+.reply-button:hover{
+	background: black;
+	color: white;
+	cursor: pointer;
+}

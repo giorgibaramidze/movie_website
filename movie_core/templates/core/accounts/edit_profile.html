@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+{% block edit_profile %}
+{% include 'core/accounts/user-nav-bar.html' %}
+<div class="login-register">
+  <form class="" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    {{u_form}}
+    {{p_form}}
+    <!-- <div class="row">
+      <input type="text" name="first_name" placeholder="სახელი" value="{{user.first_name}}" maxlength="150" id="id_first_name" class="form-size" required oninvalid="this.setCustomValidity('გთხოვთ შეავსოთ ველი')"
+  oninput="this.setCustomValidity('')">
+    </div>
+    <div class="row">
+      <input type="text" name="last_name" value="{{user.last_name}}" placeholder="გვარი" maxlength="150" id="id_last_name" class="form-size" required oninvalid="this.setCustomValidity('გთხოვთ შეავსოთ ველი')"
+  oninput="this.setCustomValidity('')">
+    </div>
+    <div class="row">
+      <input type="text" name="username" value="{{user.username}}" placeholder="მომხმარებლის სახელი" maxlength="150" id="id_username" disabled="disabled" class="form-size">
+    </div>
+    <div class="row">
+      <input type="email" name="email" value="{{user.email}}" max_length="150" id="id_email" disabled="disabled" class="form-size">
+    </div> -->
+    <div class="row">
+      <button type="submit" name="button" >შეცვლა</button>
+    </div>
+    <div class="row">
+      <div class="messages">
+        {% for message in messages %}
+          <p>{{message}}</p>
+        {% endfor %}
+      </div>
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+  document.getElementById("id_first_name").required = true;
+  document.getElementById("id_last_name").required = true;
+  document.getElementById("id_username").required = true;
+  document.querySelector('.login-register span').style.display = 'none';
+  document.querySelector('.login-register a').style.display = 'none';
+
+
+</script>
+{% endblock %}

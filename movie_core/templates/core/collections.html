@@ -1,0 +1,30 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="movies_list">
+  {% for collection in collections %}
+  <div class="collection-wrapper">
+    <a href="{% url 'collection_detail' collection.id %}" class="c-wrapper">
+      <div class="collection-img">
+        <img src="{{collection.image.url}}" alt="">
+      </div>
+      <div class="collection-right">
+        <div class="collection-title">
+          {{collection.title}}
+        </div>
+        <h4>{{collection.movie.count}} ფილმი</h4>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+<!--
+<div class="collection" style="width:200px;height:200px;">
+  <h1></h1>
+  {%for j in i.movie.all %}
+    {{j.title_eng}}
+    <img src="{{ j. }}" style="width:100px;height:200px;" alt="">
+  {% endfor %}
+</div> -->
+
+</div>
+
+{% endblock %}

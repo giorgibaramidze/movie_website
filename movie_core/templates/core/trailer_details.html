@@ -1,0 +1,147 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<div class="movie" style="background-image: linear-gradient(rgba(0, 0, 0, 0.827),rgba(0, 0, 0, 0.8)), url('{{movie_details.cover_image.url}}');">
+			<div class="banner">
+				<img src="{{movie_details.banner_image.url}}">
+			</div>
+			<div class="movie-video">
+                <video width="100%" height="100%" poster="{{movie_details.cover_image.url}}" controls>
+                    <source src="" type="video/mp4">
+                    <track kind="captions" label="English" srclang="en" src="https://raw.githubusercontent.com/BMSVieira/moovie.js/main/demo-template/subtitles/en.vtt">
+                    Your browser does not support the video tag.
+                </video>
+			</div>
+		</div>
+		<div class="about_movie">
+			<div class="row">
+				<div class="title">
+					<h1>{{movie_details.title_geo}}</h1>
+					<h3>{{movie_details.title_eng}} / ქართულად</h3>
+				</div>
+				<div class="user_side">
+					<div  id="user_side1">
+						{% include 'core/accounts/add_favourite.html' %}
+					</div>
+					<div  id="user_side2">
+						{% include 'core/accounts/add_watch_later.html' %}
+					</div>
+					<div  id="user_side3">
+						{% include 'core/accounts/like.html' %}
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="genre">
+					<p>ჯანრი:
+            {% for genre in movie_details.genries.all %}
+              <a class="info" href="/movies/?genre={{genre}}">{{genre}},</a>
+            {% endfor %}
+          </p>
+				</div>
+			</div>
+			<div class="row">
+				<p>გამოსჰვების წელი: <a class="info" href="">{{movie_details.year}}</a></p>
+			</div>
+			<div class="row">
+				<p>რეჯისორი: <a class="info" href="/search/?director={{movie_details.directors}}">{{movie_details.directors}}</a></p>
+			</div>
+			<div class="row">
+				<p>ხანგრზლივობა: {{movie_details.duration}} წთ</p>
+			</div>
+			<div class="row">
+				<p>ქვეყანა: <a class="info" href="/movies/filter-data?country%5b5d={{movie_details.countries.id}}">{{movie_details.countries}}</a></p>
+			</div>
+			<div class="desctiption">
+				<h2>ფილმის სიუჯეტი</h2>
+				<p>{{movie_details.description}}</p>
+			</div>
+		</div>
+		<div class="actors" style="padding: 0 30px 0 30px;">
+			<a href="{% url 'actors' %}" class="all-actors">მსახიობები</a>
+			<div class="swc-2">
+				<div class="swiper-wrapper">
+          {% for actor in movie_details.actors.all %}
+					<a href="{% url 'actors_movies' actor.id %}" class="swiper-slide">
+						<img src="{{actor.actor_image.url}}">
+						<div class="actor-name"><p>{{actor.actor}}</p></div>
+					</a>
+          {% endfor %}
+				</div>
+			</div>
+		</div>
+		<div class="advertisement">
+	    <img src="/images/images/Untitled-5.png">
+	  </div>
+
+		<div class="new-upload-movies">
+	    <a href="" class="title">
+	      <div class="icon">
+	        <svg id="Flat" viewBox="0 0 512 512"  xmlns="http://www.w3.org/2000/svg"><path d="m344 104c-.34 0-.68.01-1.02.02a31.649 31.649 0 0 0 1.02-8.02 32.008 32.008 0 0 0 -62.82-8.66 48.117 48.117 0 0 0 -49.19-22.68c.01-.22.01-.44.01-.66a40 40 0 0 0 -79.36-7.12 40.006 40.006 0 0 0 -72.4 27.552 32 32 0 1 0 -32.24 55.276v60.292h312v-54.12a23.994 23.994 0 0 0 -16-41.88z" fill="#fde575"/><path d="m344 424h-288l-16-248h320z" fill="#2b70a8"/><path d="m360 176-16 248h-240v-248z" fill="none"/><g fill="#ce3536"><path d="m104 176v248h-48l-16-248z"/><path d="m168 176h64v248h-64z"/><path d="m344 424h-48v-248h64z"/></g><path d="m40 168h320a16 16 0 0 1 16 16v16a0 0 0 0 1 0 0h-352a0 0 0 0 1 0 0v-16a16 16 0 0 1 16-16z" fill="#a52b2b"/><path d="m488 376v96a16 16 0 0 1 -16 16h-136l-16-32-16 32h-136a16 16 0 0 1 -16-16v-96a16 16 0 0 1 16-16h136l16 32 16-32h136a16 16 0 0 1 16 16z" fill="#fae8d8"/><path d="m184 392h96v64h-96z" fill="#2b70a8"/><path d="m360 392h96v64h-96z" fill="#ce3536"/><path d="m224 136a32.036 32.036 0 0 1 -32-32 8 8 0 0 1 16 0 16 16 0 0 0 32 0 8 8 0 0 1 16 0 32.036 32.036 0 0 1 -32 32z" fill="#fcb442"/><path d="m128 144a8 8 0 0 1 0-16 16 16 0 0 0 0-32 8 8 0 0 1 0-16 32 32 0 0 1 0 64z" fill="#fcb442"/></svg>
+	      </div>
+	      <span>მსგავსი თრეილერები</span>
+	    </a>
+	    <div class="swc-1">
+	      <div class="swiper-wrapper">
+	        {% for movie in similar_movies %}
+					{% if  movie.type == 'თრეილერი'%}
+	          <a href="{% url 'trailer_details' movie.id%}" class="swiper-slide">
+	            <div class="movie-box">
+	              <div class="linear-gradient">
+	                <div class="linear-gradient-box"></div>
+	              </div>
+	              <img src="{{ movie.banner_image.url}}">
+	              <div class="play-icon">
+	                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	              viewBox="0 0 397.2 397.2" style="enable-background:new 0 0 397.2 397.2;" xml:space="preserve">
+	                <g>
+	                  <g>
+	                    <path d="M284.2,178l-58-33.6l-57.6-33.2c-5.6-3.2-12-4-17.6-2.4c-5.6,1.6-10.8,5.2-14,10.8
+	                      c-1.2,1.6-1.6,3.6-2.4,5.6c-0.4,1.2-0.4,2.8-0.8,4.4c0,0.4,0,1.2,0,1.6v68v68c0,6.4,2.8,12.4,6.8,16.4c4.4,4.4,10,6.8,16.4,6.8
+	                      c3.6,0,11.2-3.2,13.2-4.4l56.8-32.8h0.4l0.4-0.4l58.8-34c5.6-3.2,9.2-8.4,10.8-14.4c0.4-1.2,0.4-2.8,0.4-4.4
+	                      C297.8,186.8,284.2,178,284.2,178z M276.2,201.6l-58,33.6c-0.4,0-0.8,0.4-0.8,0.4l-56.8,32.8c-0.4,0.4-2.4,1.2-3.2,1.2
+	                      s-1.6-0.4-2.4-0.8c-0.4-0.4-0.8-1.6-0.8-2.4v-67.6v-67.6v-0.4c0-0.4,0-0.4,0-0.8c0,0,0-0.4,0.4-0.4c0,0,0.4-0.4,0.4-0.8
+	                      c0.4-0.4,1.2-0.8,1.6-1.2c0.8,0,1.6,0,2,0c0.4,0.4,0.8,0.4,1.2,0.8l56.8,32.8c0.4,0.4,0.8,0.4,0.8,0.4h0.4l58,33.6
+	                      c0.8,0.4,2.4,1.6,2.4,2.8C278.2,199.6,277,201.2,276.2,201.6z"/>
+	                    <path  d="M339,58.4C300.6,19.6,249.8,0,199,0S97.4,19.2,58.6,58C19.8,97.2,0.2,148,0.2,198.8
+	                      s19.2,101.6,58,140.4s89.6,58,140.4,58c50.8,0,101.6-19.2,140.4-58c38.8-38.8,58-89.6,58-140.4S377.8,97.2,339,58.4z M325,324.8
+	                      c-34.8,34.8-80.4,52.4-126,52.4c-45.6,0-91.2-17.6-126-52.4c-35.2-34.8-52.4-80.4-52.4-126c0-45.6,17.6-91.2,52.4-126
+	                      s80.4-52.4,126-52.4c45.6,0,91.2,17.6,126,52.4s52.4,80.4,52.4,126C377.4,244.4,360.2,290,325,324.8z"/>
+	                  </g>
+	                </g>
+	              </svg>
+	              </div>
+	              <div class="movie-details">
+	                <div class="language-list">
+	                  {% for voice in movie.voices.all %}
+	                          <span>{{voice}}</span>
+	                  {% endfor %}
+	              </div>
+	              <div class="imdb-year">
+	                <div class="imdb">
+	                  <span class="imdb-logo">IMDB</span>
+	                  <span class="imdb-mark">{{movie.imdb|floatformat:1}}</span>
+	                </div>
+	                <div class="year">{{movie.year}} წ</div>
+	              </div>
+	              </div>
+	            </div>
+	            <div class="movie-title">
+	              <span>{{movie.title_geo}}</span>
+	              <span>{{movie.title_eng}}</span>
+	            </div>
+	          </a>
+						{% endif %}
+	          {% endfor %}
+	        </div>
+	        <div class="swiper-button-next"></div>
+	        <div class="swiper-button-prev"></div>
+	      </div>
+	  </div>
+
+		<div class="main-comment-section">
+							{% include 'core/accounts/comments.html' %}
+		</div>
+
+{% endblock %}

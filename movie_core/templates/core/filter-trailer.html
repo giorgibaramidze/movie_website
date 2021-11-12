@@ -1,0 +1,188 @@
+<div class="search-filter">
+  <form class="" action="{% url 'filter_data_trailer' %}" method="GET">
+
+    <div class="filter-form">
+        <div class="multiselect">
+          <div class="selectBox" onclick="showCheckboxes()">
+            <select>
+              <option>ჯანრი</option>
+            </select>
+            <div class="overSelect"></div>
+          </div>
+          <div id="checkboxes">
+            <label>
+              {% for i in genre %}
+              <input type="checkbox" class="filter-checkbox-trailer" data-filter='genre' name="genre" value="{{i}}">{{i}}</label>
+            <label>
+              {% endfor %}
+          </div>
+        </div>
+    </div>
+    <div class="filter-form">
+        <div class="multiselect">
+          <div class="selectBox" onclick="showCheckboxes1()">
+            <select>
+              <option>ქვეყანა</option>
+            </select>
+            <div class="overSelect"></div>
+          </div>
+          <div id="checkboxes1">
+            <label>
+              {% for i in country %}
+              <input type="checkbox" class="filter-checkbox-trailer" data-filter='country' name="country" value="{{i}}">{{i}}</label>
+              {% endfor %}
+          </div>
+        </div>
+    </div>
+    <div class="filter-form">
+        <div class="multiselect">
+          <div class="selectBox" onclick="showCheckboxes2()">
+            <select>
+              <option>მსახიობი</option>
+            </select>
+            <div class="overSelect"></div>
+          </div>
+          <div id="checkboxes2">
+            <label>
+              {% for i in actor %}
+              <input type="checkbox" class="filter-checkbox-trailer" name="actor" data-filter='actor' value="{{i}}">{{i}}</label>
+              {% endfor %}
+          </div>
+        </div>
+    </div>
+    <div class="filter-form">
+        <div class="multiselect">
+          <div class="selectBox" onclick="showCheckboxes3()">
+            <select>
+              <option>რეჟისორი</option>
+            </select>
+            <div class="overSelect"></div>
+          </div>
+          <div id="checkboxes3">
+            <label>
+              {% for i in director %}
+              <input type="checkbox" class="filter-checkbox-trailer" name="director" data-filter='director' value="{{i}}">{{i}}</label>
+              {% endfor %}
+          </div>
+        </div>
+    </div>
+    <div class="filter-form">
+        <div class="multiselect">
+          <div class="selectBox" onclick="showCheckboxes4()">
+            <select>
+              <option>გახმოვანება</option>
+            </select>
+            <div class="overSelect"></div>
+          </div>
+          <div id="checkboxes4">
+            <label>
+              {% for i in voice %}
+              <input type="checkbox" class="filter-checkbox-trailer" name="voice" data-filter='voice' value="{{i}}">{{i}}</label>
+              {% endfor %}
+          </div>
+        </div>
+    </div>
+  </form>
+</div>
+<style media="screen">
+  .multiselect {
+  width: 200px;
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 100%;
+  font-weight: bold;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#checkboxes, #checkboxes1,  #checkboxes2,  #checkboxes3,  #checkboxes4{
+  display: none;
+  border: 1px #dadada solid;
+  width:200px;
+  position:absolute;
+  height:200px;
+  overflow: auto;
+  z-index:100;
+  background:black;
+  color:white;
+}
+
+#checkboxes label, #checkboxes1 label, #checkboxes2 label, #checkboxes3 label, #checkboxes4 label {
+  display: block;
+}
+
+#checkboxes label:hover {
+  background-color: #1e90ff;
+}
+
+
+
+
+
+</style>
+
+<script type="text/javascript">
+  var expanded = false;
+
+  function showCheckboxes() {
+  var checkboxes = document.getElementById("checkboxes");
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+  }
+  function showCheckboxes1() {
+  var checkboxes = document.getElementById("checkboxes1");
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+  }
+  function showCheckboxes2() {
+  var checkboxes = document.getElementById("checkboxes2");
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+  }
+  function showCheckboxes3() {
+  var checkboxes = document.getElementById("checkboxes3");
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+  }
+  function showCheckboxes4() {
+  var checkboxes = document.getElementById("checkboxes4");
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+  }
+</script>

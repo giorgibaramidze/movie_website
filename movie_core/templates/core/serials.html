@@ -1,0 +1,8 @@
+{% extends "core/base.html" %}
+{% block serials %}
+{% include 'core/filter-serial.html' %}
+<div class="movies_list">
+  <p class="ajaxLoader">Loading...</p>
+  {%  include 'core/serials_list.html' %}
+</div>
+{% endblock %}

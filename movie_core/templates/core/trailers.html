@@ -1,0 +1,8 @@
+{% extends "core/base.html" %}
+{% block trailers %}
+{% include 'core/filter-trailer.html' %}
+<div class="movies_list">
+  <p class="ajaxLoader">Loading...</p>
+  {% include 'core/trailers_list.html' %}
+</div>
+{% endblock %}

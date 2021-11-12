@@ -25,6 +25,9 @@ class Voice(models.Model):
     def __str__(self):
         return self.voice
 
+    class Meta:
+        verbose_name_plural = " გახმოვანება"
+
 
 class Genrie(models.Model):
     genre = models.CharField(max_length=255)
@@ -32,12 +35,18 @@ class Genrie(models.Model):
     def __str__(self):
         return self.genre
 
+    class Meta:
+        verbose_name_plural = " ჟანრი"
+
 
 class Countrie(models.Model):
     country = models.CharField(max_length=255)
 
     def __str__(self):
         return self.country
+
+    class Meta:
+        verbose_name_plural = " ქვეყნები"
 
 
 class Actor(models.Model):
@@ -48,6 +57,9 @@ class Actor(models.Model):
     def __str__(self):
         return self.actor
 
+    class Meta:
+        verbose_name_plural = " მსახიობები"
+
 class Director(models.Model):
     director = models.CharField(max_length=255)
     director_image = models.ImageField(upload_to='images/director')
@@ -56,16 +68,18 @@ class Director(models.Model):
     def __str__(self):
         return self.director
 
+    class Meta:
+        verbose_name_plural = " რეჟისორები"
+
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=CASCADE)
+    user = models.OneToOneField(User, on_delete=CASCADE, blank=True)
     image = models.ImageField(default='users/2.svg', upload_to='users/profile_pictures')
 
     def __str__(self):
         return self.user.username
 
-
-
-
+    class Meta:
+        verbose_name_plural =  " პროფილები"
 
 
 class Movie(models.Model):
@@ -90,6 +104,10 @@ class Movie(models.Model):
     likes = models.ManyToManyField(User, related_name='likes', editable=False, blank=True)
     tag = TaggableManager()
 
+    class Meta:
+        verbose_name_plural = " ფილმები"
+
+
     def total_likes(self):
         return self.likes.count()
 
@@ -101,6 +119,18 @@ class Movie(models.Model):
 
     def get_absolute_url(self):
         return reverse('movie_details', args=[str(self.id)])
+
+
+class MovieCollection(models.Model):
+    title = models.CharField(max_length=255)
+    movie = models.ManyToManyField(Movie, related_name='movie', blank=True)
+    image = models.ImageField(upload_to='images/movies/collections', null=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = " კოლექციები"
 
 class Comment(models.Model):
     user = models.ForeignKey(Profile,on_delete=models.CASCADE)
@@ -117,6 +147,11 @@ class Comment(models.Model):
 
     def get_absolute_url(self):
         return reverse('movie_details', args=[self.id])
+
+    class Meta:
+        verbose_name_plural = " კომენტარები"
+
+
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):

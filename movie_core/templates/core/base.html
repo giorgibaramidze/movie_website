@@ -26,6 +26,7 @@
 	{% url 'favorites' as favorites %}
 	{% url 'watch_later' as watch_later %}
 	{% url 'rated' as rated %}
+	{% url 'collections' as collection %}
 	{% url 'edit_profile' as edit_profile %}
 	{% include 'core/nav-bar.html' %}
 	<div class="content">
@@ -35,7 +36,7 @@
 				<!-- {% csrf_token %} -->
 				<input type="search" id="search-input" name="search" value="{{request.GET.search}}" placeholder="საძიებო სიტყვა..." autocomplete="off">
 				<button type="submit">ძებნა</button>
-				<div class="results-card not-visible" id="results-box"></div>
+				<div class="results-card not-visible" id="results-box">qweqwe</div>
 			</form>
 			{% if user.is_authenticated %}
 			<div  class="log-in">
@@ -411,6 +412,58 @@ $(document).ready(function(){
 	});
 </script>
 
+<!-- <script>
+const url = window.location.href;
+const searchForm = document.getElementById('search-form');
+const searchInput = document.getElementById('search-input');
+const resultsBox = document.getElementById('results-box');
 
+const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+console.log(csrf)
+
+const sendSearchData = (movie) =>{
+	$.ajax({
+		type: 'POST',
+		url: '  ',
+		data:{
+			'csrfmiddlewaretoken': csrf,
+			'movie': movie,
+		},
+		success: (res)=>{
+			console.log(res.data)
+			const data = res.data
+			if (Array.isArray(data)){
+				data.forEach(movie=>{
+					resultsBox.innerHTML +=
+					'<a href="'+ url + movie.pk +'">'+ movie.title_geo +'</a>'
+
+
+				})
+			} else{
+				if (searchInput.value.length > 0){
+					resultsBox.innerHTML = '<b>'+ data+ '</b>'
+				} else {
+					resultsBox.classList.add('not-visible')
+				}
+			}
+		},
+		error: (err)=>{
+			console.log(err)
+		},
+	})
+}
+
+
+searchInput.addEventListener('keyup', e=>{
+	console.log(e.target.value)
+
+	if (resultsBox.classList.contains('not-visible')){
+		resultsBox.classList.remove('not-visible')
+	}
+
+	sendSearchData(e.target.value)
+})
+
+</script> -->
 </body>
 </html>

@@ -111,6 +111,7 @@ class Home(TemplateView):
         context['directors_list'] = Director.objects.all().order_by('-id')[:18]
         context['rating_list'] = Movie.objects.all().order_by('-imdb')[:12]
         context['popular_list'] = Movie.objects.all().order_by('-views')[:12]
+        context['collections_list'] = MovieCollection.objects.all().order_by('-id')[:6]
 
         return context
 
@@ -273,49 +274,30 @@ def search(request):
         movie = Movie.objects.filter(
             Q(title_eng__icontains=query)
         ).order_by('-id').distinct()
-    # genre = Genrie.objects.all().order_by('genre')
-    # voice = Voice.objects.all().order_by('voice')
-    # country = Countrie.objects.all().order_by('country')
-    # director = Director.objects.all().order_by('director')
-    # imdb_min_range = request.GET.get('min-range')
-    # imdb_max_range = request.GET.get('max-range')
-    # genre_query = request.GET.get('genre')
-    # country_query = request.GET.get('country')
-    # actor_query = request.GET.get('actor')
-    # voice_query = request.GET.get('voice')
-    # director_query = request.GET.get('director')
-    # actor = Actor.objects.all().order_by('actor')
-
-    # if is_valid_queryparam(d):
-    #     movie = movie.filter(Q(title_eng__icontains=d)).distinct()
-    #
-    # if is_valid_queryparam(genre_query):
-    #     movie = movie.filter(genries__genre=genre_query)
-    # if is_valid_queryparam(voice_query):
-    #     movie = movie.filter(voices__voice=voice_query)
-    #
-    # if is_valid_queryparam(country_query):
-    #     movie = movie.filter(countries__country=country_query)
-    # if is_valid_queryparam(director_query):
-    #     movie = movie.filter(directors__director=director_query)
-    # if is_valid_queryparam(actor_query):
-    #     movie = movie.filter(actors__actor=actor_query)
-    # if is_valid_queryparam(imdb_min_range):
-    #     movie = movie.filter(imdb__gte=imdb_min_range)
-    # if is_valid_queryparam(imdb_max_range):
-    #     movie = movie.filter(imdb__lt=imdb_max_range)
-
     context = {
         'movies': movie,
-        # 'genre':genre,
-        # 'country':country,
-        # 'actor': actor,
-        # 'director':director,
-        # 'voice': voice,
     }
     return render(request, "core/search_result.html", context)
 
-
+# def ajax_search(request):
+#     if request.is_ajax():
+#         movie = request.POST.get('movie')
+#         qs = Movie.objects.filter(title_eng__icontains=movie)
+#         if len(qs) > 0and len(movie) > 0:
+#             data = []
+#             for pos in qs:
+#                 item = {
+#                     'pk':pos.id,
+#                     'title_geo':pos.title_geo,
+#                     'cover_image':str(pos.cover_image.url),
+#                     'type':pos.type,
+#                 }
+#                 data.append(item)
+#             res = data
+#         else:
+#             res = 'no movie found'
+#         return JsonResponse({'data':res})
+#     return JsonResponse({})
 
 def filter_data_movie(request):
     genries = request.GET.getlist('genre[]')
@@ -502,14 +484,33 @@ def TrailerDetailView(request, id):
         is_like = True
     if movies.watch_later.filter(id=request.user.id).exists():
         is_watch_later = True
+    comments = Comment.objects.filter(movie=movies, reply=None).order_by('-id')
     similar_movies = movies.tag.similar_objects()[:5]
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST or None)
+        if comment_form.is_valid():
+            content = request.POST.get('content')
+            reply_id = request.POST.get('comment_id')
+            comment_qs = None
+            if reply_id:
+                comment_qs = Comment.objects.get(id=reply_id)
+            comment = Comment.objects.create(movie=movies, user=request.user.profile, content=content, reply=comment_qs)
+            comment.save()
+            # return HttpResponseRedirect(movies.get_absolute_url())
+    else:
+        comment_form = CommentForm()
     context = {
+        'comments': comments,
+        'comment_form': comment_form,
         'movie_details':movies,
         'similar_movies':similar_movies,
         'is_favourite': is_favourite,
         'is_watch_later':is_watch_later,
         'is_like':is_like,
     }
+    if request.is_ajax():
+        html = render_to_string('core/accounts/comments.html', context, request=request)
+        return JsonResponse({'form': html})
     return render(request, 'core/trailer_details.html', context)
 
 def SerialDetailView(request, id):
@@ -525,12 +526,47 @@ def SerialDetailView(request, id):
         is_like = True
     if movies.watch_later.filter(id=request.user.id).exists():
         is_watch_later = True
+    comments = Comment.objects.filter(movie=movies, reply=None).order_by('-id')
     similar_movies = movies.tag.similar_objects()[:5]
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST or None)
+        if comment_form.is_valid():
+            content = request.POST.get('content')
+            reply_id = request.POST.get('comment_id')
+            comment_qs = None
+            if reply_id:
+                comment_qs = Comment.objects.get(id=reply_id)
+            comment = Comment.objects.create(movie=movies, user=request.user.profile, content=content, reply=comment_qs)
+            comment.save()
+            # return HttpResponseRedirect(movies.get_absolute_url())
+    else:
+        comment_form = CommentForm()
     context = {
+        'comments': comments,
+        'comment_form': comment_form,
         'movie_details':movies,
         'similar_movies':similar_movies,
         'is_favourite': is_favourite,
         'is_watch_later':is_watch_later,
         'is_like':is_like,
     }
+    if request.is_ajax():
+        html = render_to_string('core/accounts/comments.html', context, request=request)
+        return JsonResponse({'form': html})
     return render(request, 'core/serial_details.html', context)
+
+
+
+def collections(request):
+    collections = MovieCollection.objects.all().order_by('-id')
+    context = {
+        'collections':collections,
+    }
+    return render(request, 'core/collections.html', context)
+
+def collection_detail(request, id):
+    collections = MovieCollection.objects.filter(id=id)
+    context = {
+        'collections': collections,
+    }
+    return render(request, 'core/collection_view.html', context)

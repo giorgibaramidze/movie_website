@@ -19,6 +19,12 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import url
 from django.views.static import serve
+from django.contrib.auth.models import User, Group
+
+admin.site.unregister(Group)
+admin.site.site_header = 'ადმინ პანელი'
+admin.site.site_title = 'qartulad.ge'
+admin.site.index_title = 'მთავარი'
 
 urlpatterns = [
     path('admin/', admin.site.urls),

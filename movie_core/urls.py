@@ -5,14 +5,16 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
+    path('collections/', views.collections, name='collections'),
     path('movies/<int:id>', views.MovieDetailView, name='movie_details'),
     path('serials/<int:id>', views.SerialDetailView, name='serial_details'),
+    path('collections/<int:id>', views.collection_detail, name='collection_detail'),
     path('trailers/<int:id>', views.TrailerDetailView, name='trailer_details'),
     path('actors/', ActorsListView.as_view(), name='actors'),
     path('actors/<int:id>', views.actors_movies, name='actors_movies'),
     path('movies/', views.MovieListView, name='movies'),
     path('search/', views.search, name='search'),
-    # path('?', views.search_results, name='search')
+    # path('ajax_search/', views.ajax_search, name='ajax_search'),
     path('serials/', views.serials, name='serials'),
     path('trailers/', views.trailers, name='trailers'),
     path('filter-data-movie/', views.filter_data_movie, name='filter_data_movie'),

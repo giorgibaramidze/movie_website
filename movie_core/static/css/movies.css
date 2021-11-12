@@ -235,3 +235,42 @@
 	color: white;
 	cursor: pointer;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+.collection-wrapper{
+  display:flex;
+	padding: 13px;
+	width: 33%;
+}
+.collection-wrapper .collection-img{
+  width:50%;
+}
+.collection-wrapper .collection-img img{
+  width:100%;
+  height:100%;
+}
+.collection-wrapper .collection-right{
+  display:flex;
+  flex-direction:column;
+	justify-content: space-between;
+	padding: 10px;
+	width: 50%;
+}
+.collection-wrapper .c-wrapper{
+	height: 190px;
+	display: flex;
+	background: #242731;
+	width: 100%;
+	border-radius: 10px;
+	overflow: hidden;
+}

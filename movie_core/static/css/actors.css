@@ -5,7 +5,7 @@
   text-align: center;
 }
 .actors-container .actor-box{
-  width: 230px;
+  width: calc(100%/8);
   height: 262px;
   margin: 60px 15px 15px 15px;
 }

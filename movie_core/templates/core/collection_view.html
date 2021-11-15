@@ -1,7 +1,14 @@
 {% extends "core/base.html" %}
 {% block content %}
+{% for movie in collections.all%}
+<div class="collection-background">
+  <div class="background-image" style='background-image:url({{movie.image.url}})'>
+  </div>
+  <div class="collection-bg-title">
+    <h3>{{movie.title}}</h3>
+  </div>
+</div>
 <div class="movies_list">
-  {% for movie in collections.all %}
   {% for movie in movie.movie.all%}
   <div class="movie-wrapper">
     <a href="{% url 'movie_details' movie.id%}" class="wrapper">

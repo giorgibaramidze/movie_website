@@ -223,10 +223,10 @@ class ActorsListView(ListView):
 
 
 def actors_movies(request, id):
-    actors = Actor.objects.filter(pk=id)
+    actors = Actor.objects.filter(id=id)
     movies = Movie.objects.filter(actors__in=list(actors)).order_by('-id')
     context = {
-        'actors': actors,
+        'actor_details': actors,
         'movies': movies
     }
     return render(request, 'core/actors_movie.html', context)
@@ -374,6 +374,7 @@ def favorites(request):
         'favourite_movie': favourite_movie,
     }
     return render(request, 'core/accounts/favorites.html', context)
+
 
 def rated(request):
     user = request.user

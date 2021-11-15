@@ -1,5 +1,5 @@
 {% extends 'core/base.html' %}
-{% block actors %}
+{% block content %}
 <div class="actors-container infinite-container">
   {% for actor in all_actors %}
   <a href="{% url 'actors_movies' actor.id %}" class="actor-box infinite-item">

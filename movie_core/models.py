@@ -54,26 +54,36 @@ class Actor(models.Model):
     actor_image = models.ImageField(upload_to='images/actors')
     date = models.DateField()
 
+    class Meta:
+        verbose_name_plural = " მსახიობები"
+
+
     def __str__(self):
         return self.actor
 
-    class Meta:
-        verbose_name_plural = " მსახიობები"
+
+    def img(self):
+        return mark_safe('<img src="{}" width="100"/>'.format(self.actor_image.url))
+
 
 class Director(models.Model):
     director = models.CharField(max_length=255)
     director_image = models.ImageField(upload_to='images/director')
     date = models.DateField()
 
+    class Meta:
+        verbose_name_plural = " რეჟისორები"
+
     def __str__(self):
         return self.director
 
-    class Meta:
-        verbose_name_plural = " რეჟისორები"
+    def img(self):
+        return mark_safe('<img src="{}" width="100" height="100"/>'.format(self.director_image.url))
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=CASCADE, blank=True)
     image = models.ImageField(default='users/2.svg', upload_to='users/profile_pictures')
+
 
     def __str__(self):
         return self.user.username
@@ -83,6 +93,8 @@ class Profile(models.Model):
 
 
 class Movie(models.Model):
+
+
     title_geo = models.CharField(max_length=255)
     title_eng = models.CharField(max_length=255)
     voices = models.ManyToManyField(Voice)
@@ -103,6 +115,8 @@ class Movie(models.Model):
     watch_later = models.ManyToManyField(User, related_name='watch_later', blank=True, editable=False)
     likes = models.ManyToManyField(User, related_name='likes', editable=False, blank=True)
     tag = TaggableManager()
+
+
 
     class Meta:
         verbose_name_plural = " ფილმები"
@@ -125,6 +139,7 @@ class MovieCollection(models.Model):
     title = models.CharField(max_length=255)
     movie = models.ManyToManyField(Movie, related_name='movie', blank=True)
     image = models.ImageField(upload_to='images/movies/collections', null=True)
+
 
     def __str__(self):
         return self.title

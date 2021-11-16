@@ -130,7 +130,7 @@ def MovieDetailView(request, id):
     if movies.watch_later.filter(id=request.user.id).exists():
         is_watch_later = True
     comments = Comment.objects.filter(movie=movies, reply=None).order_by('-id')
-    similar_movies = movies.tag.similar_objects()[:5]
+    similar_movies = movies.tag.similar_objects()[:10]
     if request.method == 'POST':
         comment_form = CommentForm(request.POST or None)
         if comment_form.is_valid():

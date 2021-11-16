@@ -8,19 +8,19 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-from taggit.models import TaggedItemBase
-
 
 CHOICES = [
     ('ფილმი', 'ფილმი'),
     ('სერიალი', 'სერიალი'),
     ('თრეილერი', 'თრეილერი'),
 ]
-YEAR_CHOICES = [(r,r) for r in range(1950, datetime.date.today().year+4)]
-IMDB_CHOICES = [(l,round(l,1)) for l in np.arange(1.1, 10.1, 0.1)]
+YEAR_CHOICES = [(r, r) for r in range(1950, datetime.date.today().year + 4)]
+IMDB_CHOICES = [(l, round(l, 1)) for l in np.arange(1.1, 10.1, 0.1)]
+
 
 class Voice(models.Model):
     voice = models.CharField(max_length=255)
+    objects = models.Manager()
 
     def __str__(self):
         return self.voice
@@ -31,6 +31,7 @@ class Voice(models.Model):
 
 class Genrie(models.Model):
     genre = models.CharField(max_length=255)
+    objects = models.Manager()
 
     def __str__(self):
         return self.genre
@@ -41,6 +42,7 @@ class Genrie(models.Model):
 
 class Countrie(models.Model):
     country = models.CharField(max_length=255)
+    objects = models.Manager()
 
     def __str__(self):
         return self.country
@@ -53,14 +55,13 @@ class Actor(models.Model):
     actor = models.CharField(max_length=255)
     actor_image = models.ImageField(upload_to='images/actors')
     date = models.DateField()
+    objects = models.Manager()
 
     class Meta:
         verbose_name_plural = " მსახიობები"
 
-
     def __str__(self):
         return self.actor
-
 
     def img(self):
         return mark_safe('<img src="{}" width="100"/>'.format(self.actor_image.url))
@@ -70,6 +71,7 @@ class Director(models.Model):
     director = models.CharField(max_length=255)
     director_image = models.ImageField(upload_to='images/director')
     date = models.DateField()
+    objects = models.Manager()
 
     class Meta:
         verbose_name_plural = " რეჟისორები"
@@ -80,21 +82,20 @@ class Director(models.Model):
     def img(self):
         return mark_safe('<img src="{}" width="100" height="100"/>'.format(self.director_image.url))
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=CASCADE, blank=True)
     image = models.ImageField(default='users/2.svg', upload_to='users/profile_pictures')
-
+    objects = models.Manager()
 
     def __str__(self):
         return self.user.username
 
     class Meta:
-        verbose_name_plural =  " პროფილები"
+        verbose_name_plural = " პროფილები"
 
 
 class Movie(models.Model):
-
-
     title_geo = models.CharField(max_length=255)
     title_eng = models.CharField(max_length=255)
     voices = models.ManyToManyField(Voice)
@@ -104,8 +105,8 @@ class Movie(models.Model):
     directors = models.ForeignKey(Director, on_delete=models.CASCADE)
     countries = models.ForeignKey(Countrie, on_delete=models.CASCADE)
     description = models.TextField(max_length=255)
-    imdb = models.FloatField(choices= IMDB_CHOICES)
-    year = models.IntegerField(choices= YEAR_CHOICES)
+    imdb = models.FloatField(choices=IMDB_CHOICES)
+    year = models.IntegerField(choices=YEAR_CHOICES)
     actors = models.ManyToManyField(Actor)
     video = models.FileField(upload_to='videos/movies', blank=True)
     cover_image = models.ImageField(upload_to='images/movies/cover_image')
@@ -115,12 +116,10 @@ class Movie(models.Model):
     watch_later = models.ManyToManyField(User, related_name='watch_later', blank=True, editable=False)
     likes = models.ManyToManyField(User, related_name='likes', editable=False, blank=True)
     tag = TaggableManager()
-
-
+    objects = models.Manager()
 
     class Meta:
         verbose_name_plural = " ფილმები"
-
 
     def total_likes(self):
         return self.likes.count()
@@ -139,7 +138,7 @@ class MovieCollection(models.Model):
     title = models.CharField(max_length=255)
     movie = models.ManyToManyField(Movie, related_name='movie', blank=True)
     image = models.ImageField(upload_to='images/movies/collections', null=True)
-
+    objects = models.Manager()
 
     def __str__(self):
         return self.title
@@ -147,12 +146,14 @@ class MovieCollection(models.Model):
     class Meta:
         verbose_name_plural = " კოლექციები"
 
+
 class Comment(models.Model):
-    user = models.ForeignKey(Profile,on_delete=models.CASCADE)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     reply = models.ForeignKey('Comment', blank=True, null=True, related_name='replies', on_delete=models.CASCADE)
     content = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()
 
     def __unicode__(self):
         return str(self.user)
@@ -165,7 +166,6 @@ class Comment(models.Model):
 
     class Meta:
         verbose_name_plural = " კომენტარები"
-
 
 
 @receiver(post_save, sender=User)

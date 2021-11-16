@@ -5,19 +5,16 @@ from django import forms
 from django.contrib.auth.forms import PasswordResetForm
 
 
-
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name','username', 'email', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if email and User.objects.filter(email=email).exists():
             raise forms.ValidationError('ასეთი მაილი უკვე არსებობს')
         return email
-
-
 
 
 class CustomEmailValidationOnForgotPassword(PasswordResetForm):
@@ -27,6 +24,7 @@ class CustomEmailValidationOnForgotPassword(PasswordResetForm):
             messages.error(request, f"ასეთი მაილი არ არის დარეგისტრირებული")
 
         return email
+
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
@@ -39,10 +37,12 @@ class UserUpdateForm(forms.ModelForm):
             raise forms.ValidationError()
         return user
 
+
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['image']
+
 
 class CommentForm(forms.ModelForm):
     # content = forms.CharField(label='', widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Text goes here!!!', 'row': '4', 'cols': '50'}))
